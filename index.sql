@@ -1,0 +1,27 @@
+--Matthew Jester 103219809
+
+--Task1
+
+--Subject(SubjCode, Description)
+--PK(SubjCode)
+--
+--Teacher(StaffID, Surname, GivenName)
+--PK(StaffID)
+--
+--Student(StudentID, Surname, GivenName, Gender)
+--PK(StudentID)
+--
+--SubjectOffering(SubjCode, Year, Semester,StaffID, Fee)
+--PK(SubjCode, Year, Semester)
+--FK(SubjCode) references Subject
+--FK(StaffID) references Teacher
+--
+--
+--Enrolement(StudentID, SubjCode, Year, Semester, DateEnrolled, Grade)
+--PK(StudentID, SubjCode, Year, Semester)
+--FK(StudentID) references Student
+--FK(SubjCode) references Subject
+--FK(Year, Semester) references SubjectOffering
+--
+--
+--
