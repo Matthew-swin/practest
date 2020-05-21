@@ -24,7 +24,7 @@
 --
 --
 --
-IF OBJECT_ID('Enrolement') IS NOT NULL
+/* IF OBJECT_ID('Enrolement') IS NOT NULL
 DROP TABLE Enrolement;
 
 IF OBJECT_ID('SubjectOffering') IS NOT NULL
@@ -120,8 +120,51 @@ INSERT INTO Enrolement (StudentID, SubjCode, Year, Semester, Grade) VALUES
 ,('s23344556',	'ICTWEB425',	2019,	1, 'HD')
 ,('s34455667',	'ICTWEB425',	2019,	1, 'P')
 ,('s12233445',	  'ICTDBS403',	2019,	1, 'C')
-,('s23344556',	'ICTDBS403',	2019,	2)	
-,('s34455667',	'ICTDBS403',	2019,	2)	
+,('s23344556',	'ICTDBS403',	2019,	2, NULL)	
+,('s34455667',	'ICTDBS403',	2019,	2, NULL)	
 ,('s23344556',	'ICTDBS502',	2018,	2, 'P')
 ,('s34455667',	'ICTDBS502',	2018,	2, 'N')
 ;
+
+select *
+from Student */
+
+--Query 1
+select ST.GivenName, ST.Surname, E.SubjCode, E.Year, E.Semester, SO.Fee, T.Surname, T.GivenName 
+from Student ST 
+LEFT JOIN Enrolement E
+on ST.StudentID = E.StudentID
+LEFT JOIN SubjectOffering SO
+on E.SubjCode = SO.SubjCode
+and E.Year = SO.Year
+and E.Semester = SO.Semester
+LEFT JOIN Teacher T
+on SO.StaffID = T.StaffID
+
+--Checking the amount of students to confirm all have been accounted for
+Select count(*)
+from Student
+--Query 2
+Select SO.Year, SO.Semester, count(*) as 'Num Enrollments'
+from SubjectOffering SO
+LEFT JOIN Enrolement E
+on SO.SubjCode = E.SubjCode
+and SO.Year = E.Year
+and SO.Semester = E.Semester
+GROUP BY SO.Year, SO.Semester
+
+--Checking the above will bring over the correct amount of enrolements
+Select Count(*)
+from Enrolement
+
+Select * 
+from Enrolement
+
+--Query 3
+Select E.StudentID, E.SubjCode, E.Year, E.Semester, E.Grade, SO.Fee
+from Enrolement E
+left join SubjectOffering SO
+on E.SubjCode = SO.SubjCode
+and E.Year = SO.Year
+and E.Semester = SO.Semester
+where SO.Fee = (Select max(Fee) from SubjectOffering)
